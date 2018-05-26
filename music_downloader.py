@@ -31,10 +31,12 @@ def get_music_source(music_url):
 
 def download_music(music_source, music_name):
     """将音乐保存到本地文件"""
+    print('开始下载音乐...')
     try:
         music_file = open(music_name + '.mp3', 'wb')
         music_file.write(music_source)
         music_file.close()
+        print('下载完成...')
     except Exception as e:
         print('写入文件错误', e)
 
