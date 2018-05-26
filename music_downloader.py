@@ -25,11 +25,26 @@ def get_music_source(music_url):
     req = request.Request(music_url, headers=headers)
     # 获取音乐
     response = request.urlopen(req)
-    music_data = response.read()
-    return music_data
+    music_source = response.read()
+    return music_source
+
+
+def download_music(music_source, music_name):
+    """将音乐保存到本地文件"""
+    try:
+        music_file = open(music_name + '.mp3', 'wb')
+        music_file.write(music_source)
+        music_file.close()
+    except Exception as e:
+        print('写入文件错误', e)
 
 
 if __name__ == '__main__':
     music_name = input('请输入您要生成的文件名:')
+    # 获取音乐url
     music_url = get_music_url()
-    music_data = get_music_source(music_url)
+    # 获取音乐资源
+    music_source = get_music_source(music_url)
+    # 下载音乐到本地
+    download_music(music_source, music_name)
+
