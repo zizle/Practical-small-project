@@ -1,18 +1,22 @@
 # _*_ coding:utf-8 _*_
 
+# _*_ coding:utf-8 _*_
+
 # 获取36kr网站的文章
 import requests
 import json
 import jsonpath
 import re
+import threading
 
 
 class ThreeSixSpider(object):
     _collect_url = []
+
     def __init__(self):
         # ?per_page=20&page=
         self.url_dict = {
-            # 'technology': 'http://36kr.com/api/search-column/218',
+            'technology': 'http://36kr.com/api/search-column/218',
             'company': 'http://36kr.com/api/search-column/23',
             'consume': 'http://36kr.com/api/search-column/221',
             'entertainment': 'http://36kr.com/api/search-column/225',
@@ -81,26 +85,51 @@ class ThreeSixSpider(object):
             id_list.append(item['id'])
         return id_list
 
+    def task(self, url, url_key):
+        """多线程任务"""
+        # 获取页数
+        pages = self.get_pages(url)
+        # 获取文章的id列表
+        article_id_list = []
+        for page in range(1, pages + 1):
+            print('抓取第' + str(page) + '页的文章id...')
+            ids_url = url + '?per_page=10&page=' + str(page)
+            id_list = self.article_ids(ids_url)
+            article_id_list.extend(id_list)
+            print('第' + str(page) + '页的文章id抓取完毕!')
+        # 获取文章
+        print('开始抓取' + url_key + '的数据...')
+        for id in article_id_list:
+            self.get_article(id, url_key)
+        print('抓取' + url_key + '的数据结束!')
+
+
     def run(self):
         """产生url,并发送请求"""
         for url_key, url in self.url_dict.items():
             f = open('36kr/' + url_key + '.txt', 'w', encoding='utf-8')
             f.close()
-            # 获取页数
-            pages = self.get_pages(url)
-            # 获取文章的id列表
-            article_id_list = []
-            for page in range(1, pages+1):
-                print('抓取第' + str(page) +'页的文章id...')
-                ids_url = url + '?per_page=10&page=' + str(page)
-                id_list = self.article_ids(ids_url)
-                article_id_list.extend(id_list)
-                print('第'+str(page) + '页的文章id抓取完毕!')
-            # 获取文章
-            print('开始抓取' + url_key + '的数据...')
-            for id in article_id_list:
-                self.get_article(id, url_key)
-            print('抓取' + url_key + '的数据结束!')
+
+            # 开启多线程，每一个文章类一个线程去执行
+            t = threading.Thread(target=self.task, args=(url, url_key))
+            t.start()
+            print('当前运行的线程数为: %d' % len(threading.enumerate()))
+
+            # # 获取页数
+            # pages = self.get_pages(url)
+            # # 获取文章的id列表
+            # article_id_list = []
+            # for page in range(1, pages+1):
+            #     print('抓取第' + str(page) +'页的文章id...')
+            #     ids_url = url + '?per_page=10&page=' + str(page)
+            #     id_list = self.article_ids(ids_url)
+            #     article_id_list.extend(id_list)
+            #     print('第'+str(page) + '页的文章id抓取完毕!')
+            # # 获取文章
+            # print('开始抓取' + url_key + '的数据...')
+            # for id in article_id_list:
+            #     self.get_article(id, url_key)
+            # print('抓取' + url_key + '的数据结束!')
 
 
 if __name__ == '__main__':
