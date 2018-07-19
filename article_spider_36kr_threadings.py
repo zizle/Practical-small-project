@@ -1,7 +1,5 @@
 # _*_ coding:utf-8 _*_
 
-# _*_ coding:utf-8 _*_
-
 # 获取36kr网站的文章
 import requests
 import json
@@ -29,7 +27,7 @@ class ThreeSixSpider(object):
 
     def get_article(self, id, file_name):
         """获取数据"""
-        print('开始获取'+ file_name + '的id为' + str(id) + '的文章...')
+        print('开始获取' + file_name + '的id为' + str(id) + '的文章...')
         # http://36kr.com/p/546210.html
         article_url = 'http://36kr.com/p/' + str(id) + '.html'
         response = requests.get(url=article_url, headers=self.headers)
