@@ -1,0 +1,32 @@
+消费的api：
+http://36kr.com/api/search-column/221
+大公司的api
+http://36kr.com/api/search-column/23
+技能GET
+http://36kr.com/api/search-column/103
+娱乐
+http://36kr.com/api/search-column/225
+教育
+http://36kr.com/api/search-column/227
+前沿技术
+http://36kr.com/api/search-column/218
+汽车交通
+http://36kr.com/api/search-column/219
+
+获取的都是json，解析出
+data里面的total_count(总条数), page_size(每页条数)
+在获取每一页的文章id
+http://36kr.com/api/search-column/219 + ?per_page=20&page=1
+
+在发送请求http://36kr.com/p/ + id + .html 获取文章详情.html
+
+正则匹配结果  r'<script>var props=(.*),locationnal='
+
+转为json
+
+获取"detailArticle|post"里面的 title， summary， content， cover
+
+保存，写入数据库
+
+
+
