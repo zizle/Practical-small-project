@@ -52,7 +52,7 @@ if __name__ == '__main__':
         time.sleep(2)
         if next_page_url:
             title, book_text, next_page_url = get_html(next_page_url)
-            with open('book/斗罗大陆(1-118).txt', 'a') as f:
+            with open('book/斗罗大陆(全本).txt', 'a') as f:
                 f.write(title)
                 f.write('\r\n')
                 f.write('\r\n')
