@@ -11,3 +11,5 @@ Practical small project for new python learners
 5. 爬取京东图书信息
 6. 爬取36氪文章内容
 7. 爬取百度招聘北京站信息
+8. 爬取内涵吧内涵段子文章信息
+9. 爬取全本斗罗大陆小说
